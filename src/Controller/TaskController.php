@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\DTO\TaskDTO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -27,11 +29,9 @@ class TaskController extends AbstractController
     }
 
     #[Route('/api/boards/{boardId}/columns/{columnId}/tasks', name: 'single_task', methods: ['POST'])]
-    public function addTask(int $boardId, int $columnId): Response
+    public function addTask(int $boardId, int $columnId, Request $request): Response
     {
-        return new Response(
-            'true'
-        );
+        $task = new TaskDTO($request->get('name'), $columnId, $request->get('description'));
     }
 
     #[Route('/api/boards/{boardId}/columns/{columnId}/tasks/{taskId}', name: 'update_task', methods: ['PUT'])]
