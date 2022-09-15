@@ -39,20 +39,21 @@ class TaskRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Task[] Returns an array of Task objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('t.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Task[] Returns an array of Task objects
+     */
+    public function findByBoardAndStatus(int $boardId, int $statusId): array
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.boardId = :val')
+            ->setParameter('val', $boardId)
+            ->orderBy('t.id', 'ASC')
+            ->andWhere('t.status = :val1')
+            ->setParameter('val1', $statusId)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
 //    public function findOneBySomeField($value): ?Task
 //    {
