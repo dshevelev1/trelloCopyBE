@@ -7,14 +7,21 @@
         "php": ">=8.1",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "doctrine/doctrine-bundle": "^2.7",
+        "doctrine/doctrine-migrations-bundle": "^3.2",
+        "doctrine/orm": "^2.13",
+        "lexik/jwt-authentication-bundle": "^2.16",
+        "nelmio/api-doc-bundle": "^4.9",
+        "nelmio/cors-bundle": "^2.2",
         "symfony/console": "6.1.*",
         "symfony/dotenv": "6.1.*",
         "symfony/flex": "^2",
         "symfony/framework-bundle": "6.1.*",
+        "symfony/password-hasher": "6.1.*",
+        "symfony/proxy-manager-bridge": "6.1.*",
         "symfony/runtime": "6.1.*",
+        "symfony/validator": "6.1.*",
         "symfony/yaml": "6.1.*"
-    },
-    "require-dev": {
     },
     "config": {
         "allow-plugins": {
@@ -48,14 +55,6 @@
         "symfony/polyfill-php81": "*"
     },
     "scripts": {
-        "auto-scripts": [
-        ],
-        "post-install-cmd": [
-            "@auto-scripts"
-        ],
-        "post-update-cmd": [
-            "@auto-scripts"
-        ]
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -65,5 +64,9 @@
             "allow-contrib": false,
             "require": "6.1.*"
         }
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.8",
+        "symfony/maker-bundle": "^1.45"
     }
 }
