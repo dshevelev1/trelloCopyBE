@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\DTO\TaskDTO;
 use App\Entity\Task;
 use Doctrine\Persistence\ManagerRegistry;
+use Lcobucci\JWT\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -88,18 +89,41 @@ class TaskController extends AbstractController
     }
 
     #[Route('/api/boards/{boardId}/columns/{columnId}/tasks/{taskId}', name: 'update_task', methods: ['PUT'])]
-    public function updateTask(int $boardId, int $columnId, int $taskId): Response
+    public function updateTask(int $boardId, int $columnId, int $taskId, ManagerRegistry $doctrine): Response
     {
-        return new Response(
-            'true'
-        );
+        try {
+            /* @var Task $task */
+            $task = $doctrine->getRepository(Task::class)->find($taskId);
+
+            if ($task->getStatus() < 3) {
+                $task->setStatus($task->getStatus() + 1);
+                $doctrine->getManager()->persist($task);
+                $doctrine->getManager()->flush();
+            }
+            return new JsonResponse([
+                'result' => 'success',
+            ]);
+        } catch (Throwable $throwable) {
+            return new JsonResponse([
+                'result' => 'error:' . $throwable->getMessage(),
+            ]);
+        }
     }
 
     #[Route('/api/boards/{boardId}/columns/{columnId}/tasks/{taskId}', name: 'delete_task', methods: ['DELETE'])]
-    public function deleteTask(int $boardId, int $columnId, int $taskId): Response
+    public function deleteTask(int $boardId, int $columnId, int $taskId, ManagerRegistry $doctrine): Response
     {
-        return new Response(
-            'true'
-        );
+        try {
+            $task = $doctrine->getRepository(Task::class)->find($taskId);
+            $doctrine->getManager()->remove($task);
+            $doctrine->getManager()->flush();
+            return new JsonResponse([
+                'result' => 'success',
+            ]);
+        } catch (Throwable $throwable) {
+            return new JsonResponse([
+                'result' => 'error:' . $throwable->getMessage(),
+            ]);
+        }
     }
 }
